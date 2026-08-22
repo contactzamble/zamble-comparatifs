@@ -1,0 +1,76 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { SEARCH_API_URL } from "../../config";
+---
+<BaseLayout
+  title="Rechercher un prix | Zamble Comparatifs"
+  description="Comparez le prix d'un jouet sur plusieurs marchands."
+>
+  <h1>Comparer un prix</h1>
+  <p class="lede">Cherchez un jouet ou un jeu et comparez son prix chez plusieurs marchands.</p>
+
+  <div id="mock-banner" class="disclosure" hidden>
+    Mode démonstration — ces résultats sont des données de test, pas de vrais prix. Les vrais
+    résultats arriveront une fois nos accès Amazon/eBay confirmés actifs.
+  </div>
+
+  <form id="search-form" style="display:flex; gap:0.5rem; margin-top:1.5rem; max-width:32rem">
+    <input
+      id="search-input"
+      type="search"
+      name="q"
+      placeholder="Ex. LEGO Star Wars X-Wing"
+      required
+      style="flex:1; padding:0.6rem 0.75rem; border-radius:10px; border:1px solid var(--border)"
+    />
+    <button type="submit" class="btn btn-primary">Chercher</button>
+  </form>
+
+  <div id="search-status" style="margin-top:1rem; color:var(--text-muted)"></div>
+  <div id="search-results" class="grid"></div>
+</BaseLayout>
+
+<script define:vars={{ SEARCH_API_URL }}>
+  const form = document.getElementById("search-form");
+  const input = document.getElementById("search-input");
+  const status = document.getElementById("search-status");
+  const resultsEl = document.getElementById("search-results");
+  const mockBanner = document.getElementById("mock-banner");
+
+  const sourceLabel = { amazon: "Amazon", ebay: "eBay" };
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const q = input.value.trim();
+    if (!q) return;
+
+    status.textContent = "Recherche en cours...";
+    resultsEl.innerHTML = "";
+    mockBanner.hidden = true;
+
+    try {
+      const res = await fetch(`${SEARCH_API_URL}/search?q=${encodeURIComponent(q)}`);
+      if (!res.ok) throw new Error(`Erreur ${res.status}`);
+      const data = await res.json();
+
+      mockBanner.hidden = !data.mock;
+      status.textContent = `${data.results.length} résultat(s) pour "${data.query}"`;
+
+      for (const listing of data.results) {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `
+          <div class="body">
+            <span class="meta">${sourceLabel[listing.source] ?? listing.source}</span>
+            <h3>${listing.title}</h3>
+            <span class="price">${listing.price.toFixed(2)} €</span>
+            <a class="btn btn-primary" href="${listing.affiliateUrl}" rel="sponsored noopener" target="_blank">Voir l'offre</a>
+          </div>
+        `;
+        resultsEl.appendChild(card);
+      }
+    } catch (err) {
+      status.textContent = "Impossible de charger les résultats pour le moment.";
+    }
+  });
+</script>

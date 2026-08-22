@@ -1,0 +1,46 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import ProductCard from "../../components/ProductCard.astro";
+import { getCollection } from "astro:content";
+
+const all = await getCollection("produits", (p) => p.data.theme === "lego-star-wars");
+const getBySlug = (slug: string) => all.find((p) => p.id === slug)!;
+
+const cotéEnfant = [getBySlug("millennium-falcon-standard")];
+const cotéCollectionneur = [
+  getBySlug("millennium-falcon-ucs"),
+  getBySlug("at-at-ucs"),
+  getBySlug("x-wing-ucs"),
+];
+---
+<BaseLayout
+  title="LEGO Star Wars : enfant ou collectionneur, comment choisir ? | Zamble Comparatifs"
+  description="Comment choisir entre un set LEGO Star Wars pensé pour le jeu et un set Ultimate Collector Series pensé pour l'exposition."
+>
+  <p><a href="/lego-star-wars/">← Tous les comparatifs LEGO Star Wars</a></p>
+  <h1>LEGO Star Wars : enfant ou collectionneur, comment choisir ?</h1>
+  <p class="lede">
+    Deux familles de sets très différentes cohabitent chez LEGO Star Wars : les sets
+    "jouables", pensés pour les enfants et le jeu quotidien, et les sets Ultimate
+    Collector Series (UCS), pensés pour le montage minutieux et l'exposition.
+  </p>
+
+  <h2>Pour jouer : sets accessibles</h2>
+  <p>Format plus compact, prix plus contenu, âge recommandé plus bas, résistance à la manipulation.</p>
+  <div class="grid">
+    {cotéEnfant.map((produit) => <ProductCard produit={produit} />)}
+  </div>
+
+  <h2>Pour exposer : gamme Ultimate Collector Series</h2>
+  <p>Plus grands, plus détaillés, plus chers — pensés pour être montés une fois et exposés, pas pour être manipulés au quotidien.</p>
+  <div class="grid">
+    {cotéCollectionneur.map((produit) => <ProductCard produit={produit} />)}
+  </div>
+
+  <h2>Notre conseil</h2>
+  <p>
+    Pour un enfant de moins de 12 ans qui veut jouer avec son set, privilégiez un modèle
+    accessible. Pour un ado ou un adulte fan de la saga qui veut un objet à exposer,
+    la gamme UCS a beaucoup plus de sens malgré le budget.
+  </p>
+</BaseLayout>

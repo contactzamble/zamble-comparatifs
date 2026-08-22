@@ -1,0 +1,24 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ProductCard from "../components/ProductCard.astro";
+import { getCollection } from "astro:content";
+
+const produits = (await getCollection("produits")).slice(0, 3);
+---
+<BaseLayout
+  title="Zamble Comparatifs — LEGO Star Wars"
+  description="Comparatifs et guides d'achat pour bien choisir vos sets LEGO Star Wars."
+>
+  <h1>Bien choisir son set LEGO Star Wars</h1>
+  <p class="lede">
+    Des comparatifs indépendants pour s'y retrouver parmi les sets LEGO Star Wars :
+    budget, âge recommandé, points forts et limites de chaque set.
+  </p>
+
+  <h2>À la une</h2>
+  <div class="grid">
+    {produits.map((produit) => <ProductCard produit={produit} />)}
+  </div>
+
+  <p style="margin-top:2.5rem"><a class="btn btn-secondary" href="/lego-star-wars/">Voir tous les comparatifs LEGO Star Wars →</a></p>
+</BaseLayout>

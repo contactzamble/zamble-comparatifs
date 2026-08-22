@@ -1,0 +1,61 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getCollection, render } from "astro:content";
+
+const produits = await getCollection("produits", (p) => p.data.theme === "lego-star-wars");
+const tries = produits.sort((a, b) => b.data.prixIndicatif - a.data.prixIndicatif);
+const fiches = await Promise.all(
+  tries.map(async (p) => ({ entry: p, Content: (await render(p)).Content }))
+);
+---
+<BaseLayout
+  title="Meilleurs sets LEGO Star Wars 2026 | Zamble Comparatifs"
+  description="Notre sélection des meilleurs sets LEGO Star Wars, du plus accessible au plus premium."
+>
+  <p><a href="/lego-star-wars/">← Tous les comparatifs LEGO Star Wars</a></p>
+  <h1>Meilleurs sets LEGO Star Wars 2026</h1>
+  <p class="lede">
+    Un panorama des sets LEGO Star Wars qui valent le coup en 2026, du plus accessible
+    au plus premium, pour choisir selon votre budget et votre niveau d'expérience de montage.
+  </p>
+
+  <div class="disclosure">
+    Prix indicatifs à confirmer avant achat — les liens d'affiliation seront activés une fois
+    notre intégration Amazon finalisée.
+  </div>
+
+  <h2>Comparatif</h2>
+  <div style="overflow-x:auto">
+    <table class="compare">
+      <thead>
+        <tr>
+          <th>Set</th>
+          <th>Prix indicatif</th>
+          <th>Âge</th>
+          <th>Pour qui ?</th>
+        </tr>
+      </thead>
+      <tbody>
+        {tries.map((p) => (
+          <tr>
+            <td><a href={`#${p.id}`}>{p.data.nom}</a></td>
+            <td>{p.data.prixIndicatif.toFixed(2)} €</td>
+            <td>{p.data.ageRecommande}</td>
+            <td>{p.data.pointsForts[0]}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+
+  {fiches.map(({ entry: p, Content }) => (
+    <div id={p.id}>
+      <h2>{p.data.nom}</h2>
+      <Content />
+      <ul>
+        {p.data.pointsForts.map((pt) => <li>✅ {pt}</li>)}
+        {p.data.pointsFaibles.map((pt) => <li>⚠️ {pt}</li>)}
+      </ul>
+    </div>
+  ))}
+</BaseLayout>

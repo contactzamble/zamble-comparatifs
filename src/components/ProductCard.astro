@@ -1,0 +1,24 @@
+---
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+  produit: CollectionEntry<"produits">;
+}
+
+const { produit } = Astro.props;
+const p = produit.data;
+---
+<div class="card">
+  <img src={p.image} alt={p.nom} loading="lazy" />
+  <div class="body">
+    {!p.prixVerifie && <span class="badge-unverified">Prix à vérifier</span>}
+    <h3>{p.nom}</h3>
+    <span class="price">{p.prixIndicatif.toFixed(2)} €</span>
+    <span class="meta">Dès {p.ageRecommande} {p.referenceSet && `· réf. ${p.referenceSet}`}</span>
+    {p.affiliateUrl ? (
+      <a class="btn btn-primary" href={p.affiliateUrl} rel="sponsored noopener" target="_blank">Voir le prix</a>
+    ) : (
+      <span class="btn btn-disabled">Lien à venir</span>
+    )}
+  </div>
+</div>

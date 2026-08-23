@@ -2,8 +2,8 @@
 nom: "LEGO Star Wars Le Faucon Millennium"
 theme: "lego-star-wars"
 referenceSet: "75257"
-prixIndicatif: 169.99
-prixVerifie: false
+prixIndicatif: 272.50
+prixVerifie: true
 ageRecommande: "9+"
 image: "/products/placeholder.svg"
 pointsForts:
@@ -14,7 +14,7 @@ pointsFaibles:
   - "Beaucoup moins détaillé que la version UCS"
   - "Autocollants plutôt que pièces imprimées sur certains éléments"
 source: "amazon"
-affiliateUrl: null
+affiliateUrl: "https://www.amazon.fr/dp/B07QQ396NH?tag=bonsplanszamble-21"
 url: "https://www.lego.com/fr-fr/product/millennium-falcon-75257"
 ---
 

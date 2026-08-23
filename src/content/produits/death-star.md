@@ -1,7 +1,7 @@
 ---
 nom: "LEGO Star Wars L'Étoile de la Mort"
 theme: "lego-star-wars"
-referenceSet: "75159"
+referenceSet: "75419"
 prixIndicatif: 549.99
 prixVerifie: false
 ageRecommande: "16+"
@@ -14,7 +14,7 @@ pointsFaibles:
   - "Montage long et technique, pas adapté à un premier grand set"
   - "Modèle plus ancien, disponibilité en boutique parfois limitée"
 source: "amazon"
-affiliateUrl: null
+affiliateUrl: "https://www.amazon.fr/dp/B0FPXFMGVT?tag=bonsplanszamble-21"
 url: "https://www.lego.com/fr-fr/product/death-star-75159"
 ---
 

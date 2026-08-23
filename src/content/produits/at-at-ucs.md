@@ -14,7 +14,7 @@ pointsFaibles:
   - "Budget conséquent"
   - "Fragilité relative des jambes sur le long terme si déplacé souvent"
 source: "amazon"
-affiliateUrl: null
+affiliateUrl: "https://www.amazon.fr/dp/B09JKZ62H7?tag=bonsplanszamble-21"
 url: "https://www.lego.com/fr-fr/product/at-at-75313"
 ---
 

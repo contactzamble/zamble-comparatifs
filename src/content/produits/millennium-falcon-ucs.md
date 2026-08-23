@@ -14,7 +14,7 @@ pointsFaibles:
   - "Budget très élevé, réservé aux collectionneurs confirmés"
   - "Encombrement important une fois monté (plus de 80cm)"
 source: "amazon"
-affiliateUrl: null
+affiliateUrl: "https://www.amazon.fr/dp/B075NT1KHB?tag=bonsplanszamble-21"
 url: "https://www.lego.com/fr-fr/product/millennium-falcon-75192"
 ---
 

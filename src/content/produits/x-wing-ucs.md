@@ -14,7 +14,7 @@ pointsFaibles:
   - "Reste un budget significatif pour un unique vaisseau"
   - "Socle d'exposition à acheter/imprimer séparément selon les envies"
 source: "amazon"
-affiliateUrl: null
+affiliateUrl: "https://www.amazon.fr/dp/B0C22H641G?tag=bonsplanszamble-21"
 url: "https://www.lego.com/fr-fr/product/x-wing-starfighter-75355"
 ---
 

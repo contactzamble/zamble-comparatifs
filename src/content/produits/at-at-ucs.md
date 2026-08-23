@@ -3,7 +3,7 @@ nom: "LEGO Star Wars AT-AT"
 theme: "lego-star-wars"
 referenceSet: "75313"
 prixIndicatif: 799.99
-prixVerifie: false
+prixVerifie: true
 ageRecommande: "18+"
 image: "/products/placeholder.svg"
 pointsForts:

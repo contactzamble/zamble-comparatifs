@@ -3,7 +3,7 @@ nom: "LEGO Star Wars L'Étoile de la Mort"
 theme: "lego-star-wars"
 referenceSet: "75419"
 prixIndicatif: 549.99
-prixVerifie: false
+prixVerifie: true
 ageRecommande: "16+"
 image: "/products/placeholder.svg"
 pointsForts:

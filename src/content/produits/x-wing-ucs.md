@@ -3,7 +3,7 @@ nom: "LEGO Star Wars X-Wing Starfighter"
 theme: "lego-star-wars"
 referenceSet: "75355"
 prixIndicatif: 259.99
-prixVerifie: false
+prixVerifie: true
 ageRecommande: "18+"
 image: "/products/placeholder.svg"
 pointsForts:

@@ -1,5 +1,6 @@
 ---
 import type { CollectionEntry } from "astro:content";
+import PriceAlertButton from "./PriceAlertButton.astro";
 
 interface Props {
   produit: CollectionEntry<"produits">;
@@ -20,5 +21,6 @@ const p = produit.data;
     ) : (
       <span class="btn btn-disabled">Lien à venir</span>
     )}
+    <PriceAlertButton slug={produit.id} />
   </div>
 </div>

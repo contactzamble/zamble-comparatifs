@@ -18,7 +18,8 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
     </p>
 
     <h2>Prix suivis</h2>
-    <p id="tracked-empty" class="lede">Vous ne suivez aucun prix pour l'instant. Repérez un produit et cliquez sur « Suivre le prix » — cette fonctionnalité arrive bientôt sur les fiches produits.</p>
+    <p id="tracked-empty" class="lede" hidden>Vous ne suivez aucun prix pour l'instant. Repérez un produit et cliquez sur « Suivre le prix ».</p>
+    <ul id="tracked-list" style="list-style:none; padding:0; display:flex; flex-direction:column; gap:0.75rem; margin-top:1rem"></ul>
 
     <button id="logout-btn" class="btn btn-secondary" style="margin-top:2rem">Se déconnecter</button>
   </div>
@@ -31,29 +32,59 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
   const dashboard = document.getElementById("dashboard");
   const emailEl = document.getElementById("account-email");
   const emailEnabled = document.getElementById("email-enabled");
+  const trackedEmpty = document.getElementById("tracked-empty");
+  const trackedList = document.getElementById("tracked-list");
   const logoutBtn = document.getElementById("logout-btn");
 
-  const { data: { session } } = await supabase.auth.getSession();
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+
   if (!session) {
     window.location.href = "/compte/connexion/";
   } else {
     const user = session.user;
     emailEl.textContent = `Connecté en tant que ${user.email}`;
 
-    const { data: prefs } = await supabase
-      .from("notification_preferences")
-      .select("email_enabled")
-      .eq("user_id", user.id)
-      .single();
-
+    const { data: prefs } = await supabase.from("notification_preferences").select("email_enabled").eq("user_id", user.id).single();
     emailEnabled.checked = prefs?.email_enabled ?? true;
 
     emailEnabled.addEventListener("change", async () => {
-      await supabase
-        .from("notification_preferences")
-        .update({ email_enabled: emailEnabled.checked })
-        .eq("user_id", user.id);
+      await supabase.from("notification_preferences").update({ email_enabled: emailEnabled.checked }).eq("user_id", user.id);
     });
+
+    const { data: tracked } = await supabase
+      .from("tracked_items")
+      .select("id, target_price, trackable_items(slug, source, last_price)")
+      .eq("user_id", user.id)
+      .eq("is_active", true);
+
+    if (!tracked || tracked.length === 0) {
+      trackedEmpty.hidden = false;
+    } else {
+      for (const t of tracked) {
+        const item = t.trackable_items;
+        const li = document.createElement("li");
+        li.style.cssText =
+          "display:flex; justify-content:space-between; align-items:center; border:1px solid var(--border); border-radius:var(--radius); padding:0.75rem 1rem";
+
+        const label = document.createElement("span");
+        const name = item.slug.replace(/-/g, " ");
+        label.textContent = `${name} — ${item.last_price.toFixed(2)} €`;
+
+        const removeBtn = document.createElement("button");
+        removeBtn.className = "btn btn-secondary";
+        removeBtn.textContent = "Ne plus suivre";
+        removeBtn.addEventListener("click", async () => {
+          await supabase.from("tracked_items").delete().eq("id", t.id);
+          li.remove();
+          if (trackedList.children.length === 0) trackedEmpty.hidden = false;
+        });
+
+        li.append(label, removeBtn);
+        trackedList.appendChild(li);
+      }
+    }
 
     logoutBtn.addEventListener("click", async () => {
       await supabase.auth.signOut();

@@ -1,0 +1,63 @@
+---
+interface Props {
+  slug: string;
+}
+const { slug } = Astro.props;
+---
+<button class="btn btn-secondary" data-price-alert-btn data-slug={slug} hidden>Suivre le prix</button>
+
+<script type="module">
+  import { supabase } from "../lib/supabase";
+
+  const buttons = Array.from(document.querySelectorAll("[data-price-alert-btn]"));
+  if (buttons.length > 0) {
+    const slugs = buttons.map((b) => b.dataset.slug);
+    const { data: trackableItems } = await supabase.from("trackable_items").select("id, slug").in("slug", slugs);
+    const bySlug = new Map((trackableItems ?? []).map((t) => [t.slug, t.id]));
+
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
+
+    let trackedItemIds = new Set();
+    const trackableIds = [...bySlug.values()];
+    if (session && trackableIds.length > 0) {
+      const { data: tracked } = await supabase
+        .from("tracked_items")
+        .select("trackable_item_id")
+        .eq("user_id", session.user.id)
+        .in("trackable_item_id", trackableIds);
+      trackedItemIds = new Set((tracked ?? []).map((t) => t.trackable_item_id));
+    }
+
+    for (const btn of buttons) {
+      const trackableId = bySlug.get(btn.dataset.slug);
+      if (!trackableId) continue; // pas de suivi de prix disponible pour ce produit
+
+      const setLabel = (tracked) => {
+        btn.textContent = tracked ? "✓ Prix suivi" : "Suivre le prix";
+        btn.dataset.tracked = tracked ? "true" : "false";
+      };
+      setLabel(trackedItemIds.has(trackableId));
+      btn.hidden = false;
+
+      btn.addEventListener("click", async () => {
+        const {
+          data: { session },
+        } = await supabase.auth.getSession();
+        if (!session) {
+          window.location.href = `/compte/connexion/?suite=${encodeURIComponent(window.location.pathname)}`;
+          return;
+        }
+
+        if (btn.dataset.tracked === "true") {
+          await supabase.from("tracked_items").delete().eq("user_id", session.user.id).eq("trackable_item_id", trackableId);
+          setLabel(false);
+        } else {
+          await supabase.from("tracked_items").insert({ user_id: session.user.id, trackable_item_id: trackableId });
+          setLabel(true);
+        }
+      });
+    }
+  }
+</script>

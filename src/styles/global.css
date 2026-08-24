@@ -4,8 +4,14 @@
   --border: #e4e2d8;
   --text: #22241d;
   --text-muted: #6b6a5e;
-  --accent: #2f6f4f;
-  --accent-contrast: #ffffff;
+  /* Vert encre : liens et texte de marque (contraste correct sur fond clair) */
+  --accent: #2d4a3e;
+  --accent-hover: #3d6052;
+  /* Pistache : couleur qui marque (héritée de l'ancien zamble.fr), réservée
+     aux fonds de boutons/accents — trop claire pour du texte sur fond crème */
+  --accent-bright: #c5d86d;
+  --accent-bright-hover: #d8ee8a;
+  --accent-contrast: #2d4a3e;
   --warn-bg: #fbf3d9;
   --warn-text: #6b5a12;
   --radius: 10px;
@@ -22,6 +28,12 @@ body {
 }
 
 a { color: var(--accent); }
+a:hover { color: var(--accent-hover); }
+
+:focus-visible {
+  outline: 2px solid var(--accent-bright);
+  outline-offset: 2px;
+}
 
 .container {
   max-width: 72rem;
@@ -30,8 +42,8 @@ a { color: var(--accent); }
 }
 
 header.site {
-  border-bottom: 1px solid var(--border);
-  background: var(--surface);
+  background: var(--accent-bright);
+  border-bottom: 1px solid var(--accent-bright-hover);
 }
 
 header.site .container {
@@ -98,7 +110,7 @@ p.lede { color: var(--text-muted); font-size: 1.1rem; max-width: 40rem; }
 
 .card h3 { margin: 0; font-size: 1.05rem; }
 
-.card .price { font-weight: 700; font-size: 1.15rem; }
+.card .price { font-weight: 700; font-size: 1.15rem; color: var(--accent); }
 
 .card .meta { color: var(--text-muted); font-size: 0.85rem; }
 
@@ -123,15 +135,19 @@ p.lede { color: var(--text-muted); font-size: 1.1rem; max-width: 40rem; }
 }
 
 .btn-primary {
-  background: var(--accent);
+  background: var(--accent-bright);
   color: var(--accent-contrast);
 }
+
+.btn-primary:hover { background: var(--accent-bright-hover); }
 
 .btn-secondary {
   background: transparent;
   color: var(--text);
   border: 1px solid var(--border);
 }
+
+.btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
 
 .btn-disabled {
   background: var(--border);

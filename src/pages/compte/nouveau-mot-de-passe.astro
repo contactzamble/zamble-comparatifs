@@ -1,0 +1,37 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+---
+<BaseLayout title="Nouveau mot de passe | Zamble Comparatifs" description="Choisissez un nouveau mot de passe.">
+  <h1>Nouveau mot de passe</h1>
+
+  <form id="update-form" style="display:flex; flex-direction:column; gap:1rem; margin-top:1.5rem; max-width:24rem">
+    <label>
+      Nouveau mot de passe
+      <input id="password" type="password" name="password" required minlength="8" autocomplete="new-password" style="width:100%; padding:0.5rem; margin-top:0.25rem" />
+    </label>
+    <button type="submit" class="btn btn-primary">Enregistrer</button>
+  </form>
+
+  <div id="update-status" style="margin-top:1rem; color:var(--text-muted)"></div>
+</BaseLayout>
+
+<script type="module">
+  import { supabase } from "../../lib/supabase";
+
+  const form = document.getElementById("update-form");
+  const status = document.getElementById("update-status");
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const password = document.getElementById("password").value;
+    status.textContent = "Enregistrement...";
+
+    const { error } = await supabase.auth.updateUser({ password });
+    if (error) {
+      status.textContent = `Erreur : ${error.message}`;
+      return;
+    }
+    status.textContent = "Mot de passe mis à jour. Redirection...";
+    window.location.href = "/compte/";
+  });
+</script>

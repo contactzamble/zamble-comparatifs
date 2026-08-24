@@ -1,0 +1,45 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+---
+<BaseLayout title="Créer un compte | Zamble Comparatifs" description="Créez un compte pour suivre les prix et recevoir des alertes.">
+  <h1>Créer un compte</h1>
+  <p class="lede">Un compte permet de suivre le prix de vos produits préférés et de recevoir une alerte en cas de baisse.</p>
+
+  <form id="signup-form" style="display:flex; flex-direction:column; gap:1rem; margin-top:1.5rem; max-width:24rem">
+    <label>
+      Email
+      <input id="email" type="email" name="email" required autocomplete="email" style="width:100%; padding:0.5rem; margin-top:0.25rem" />
+    </label>
+    <label>
+      Mot de passe
+      <input id="password" type="password" name="password" required minlength="8" autocomplete="new-password" style="width:100%; padding:0.5rem; margin-top:0.25rem" />
+    </label>
+    <button type="submit" class="btn btn-primary">Créer mon compte</button>
+  </form>
+
+  <div id="signup-status" style="margin-top:1rem; color:var(--text-muted)"></div>
+
+  <p style="margin-top:1.5rem">Déjà un compte ? <a href="/compte/connexion/">Se connecter</a></p>
+</BaseLayout>
+
+<script type="module">
+  import { supabase } from "../../lib/supabase";
+
+  const form = document.getElementById("signup-form");
+  const status = document.getElementById("signup-status");
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value;
+    status.textContent = "Création du compte...";
+
+    const { error } = await supabase.auth.signUp({ email, password });
+    if (error) {
+      status.textContent = `Erreur : ${error.message}`;
+      return;
+    }
+    form.hidden = true;
+    status.textContent = "Compte créé ! Vérifiez votre boîte mail pour confirmer votre adresse avant de vous connecter.";
+  });
+</script>

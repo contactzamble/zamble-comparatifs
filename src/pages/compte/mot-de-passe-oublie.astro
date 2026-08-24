@@ -1,0 +1,40 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+---
+<BaseLayout title="Mot de passe oublié | Zamble Comparatifs" description="Réinitialisez votre mot de passe.">
+  <h1>Mot de passe oublié</h1>
+  <p class="lede">Indiquez votre email, vous recevrez un lien pour choisir un nouveau mot de passe.</p>
+
+  <form id="reset-form" style="display:flex; flex-direction:column; gap:1rem; margin-top:1.5rem; max-width:24rem">
+    <label>
+      Email
+      <input id="email" type="email" name="email" required autocomplete="email" style="width:100%; padding:0.5rem; margin-top:0.25rem" />
+    </label>
+    <button type="submit" class="btn btn-primary">Envoyer le lien</button>
+  </form>
+
+  <div id="reset-status" style="margin-top:1rem; color:var(--text-muted)"></div>
+</BaseLayout>
+
+<script type="module">
+  import { supabase } from "../../lib/supabase";
+
+  const form = document.getElementById("reset-form");
+  const status = document.getElementById("reset-status");
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const email = document.getElementById("email").value.trim();
+    status.textContent = "Envoi en cours...";
+
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/compte/nouveau-mot-de-passe/`,
+    });
+    if (error) {
+      status.textContent = `Erreur : ${error.message}`;
+      return;
+    }
+    form.hidden = true;
+    status.textContent = "Si un compte existe avec cet email, un lien de réinitialisation vient d'être envoyé.";
+  });
+</script>

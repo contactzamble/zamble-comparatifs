@@ -1,0 +1,66 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+---
+<BaseLayout title="Mon compte | Zamble Comparatifs" description="Gérez vos alertes de prix et vos préférences de notification.">
+  <div id="loading">Chargement...</div>
+
+  <div id="dashboard" hidden>
+    <h1>Mon compte</h1>
+    <p class="lede" id="account-email"></p>
+
+    <h2>Préférences de notification</h2>
+    <label style="display:flex; align-items:center; gap:0.5rem; margin-top:0.75rem">
+      <input id="email-enabled" type="checkbox" />
+      Recevoir les alertes par email
+    </label>
+    <p class="meta" style="color:var(--text-muted); margin-top:0.5rem">
+      Les alertes Telegram arriveront bientôt — l'option sera ajoutée ici une fois disponible.
+    </p>
+
+    <h2>Prix suivis</h2>
+    <p id="tracked-empty" class="lede">Vous ne suivez aucun prix pour l'instant. Repérez un produit et cliquez sur « Suivre le prix » — cette fonctionnalité arrive bientôt sur les fiches produits.</p>
+
+    <button id="logout-btn" class="btn btn-secondary" style="margin-top:2rem">Se déconnecter</button>
+  </div>
+</BaseLayout>
+
+<script type="module">
+  import { supabase } from "../../lib/supabase";
+
+  const loading = document.getElementById("loading");
+  const dashboard = document.getElementById("dashboard");
+  const emailEl = document.getElementById("account-email");
+  const emailEnabled = document.getElementById("email-enabled");
+  const logoutBtn = document.getElementById("logout-btn");
+
+  const { data: { session } } = await supabase.auth.getSession();
+  if (!session) {
+    window.location.href = "/compte/connexion/";
+  } else {
+    const user = session.user;
+    emailEl.textContent = `Connecté en tant que ${user.email}`;
+
+    const { data: prefs } = await supabase
+      .from("notification_preferences")
+      .select("email_enabled")
+      .eq("user_id", user.id)
+      .single();
+
+    emailEnabled.checked = prefs?.email_enabled ?? true;
+
+    emailEnabled.addEventListener("change", async () => {
+      await supabase
+        .from("notification_preferences")
+        .update({ email_enabled: emailEnabled.checked })
+        .eq("user_id", user.id);
+    });
+
+    logoutBtn.addEventListener("click", async () => {
+      await supabase.auth.signOut();
+      window.location.href = "/compte/connexion/";
+    });
+
+    loading.hidden = true;
+    dashboard.hidden = false;
+  }
+</script>

@@ -1,0 +1,22 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import ProductCard from "../../components/ProductCard.astro";
+import { getCollection } from "astro:content";
+
+const produits = await getCollection("produits", (p) => p.data.categorie === "jeux-de-societe");
+---
+<BaseLayout
+  title="Comparatifs jeux de société"
+  description="Tous nos comparatifs et guides d'achat de jeux de société."
+>
+  <h1>Comparatifs jeux de société</h1>
+  <p class="lede">Tous les jeux couverts par nos guides, du plus accessible au plus premium.</p>
+
+  {produits.length === 0 ? (
+    <p class="lede">Nos premiers comparatifs de jeux de société arrivent bientôt.</p>
+  ) : (
+    <div class="grid">
+      {produits.map((produit) => <ProductCard produit={produit} />)}
+    </div>
+  )}
+</BaseLayout>

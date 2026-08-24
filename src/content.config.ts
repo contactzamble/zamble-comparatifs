@@ -5,6 +5,7 @@ const produits = defineCollection({
   loader: glob({ pattern: "**/*.md", base: "./src/content/produits" }),
   schema: z.object({
     nom: z.string(),
+    categorie: z.enum(["lego", "jeux-de-societe", "cartes-a-collectionner"]),
     theme: z.string(),
     referenceSet: z.string().optional(),
     prixIndicatif: z.number(),
@@ -16,6 +17,7 @@ const produits = defineCollection({
     source: z.enum(["amazon", "ebay"]).default("amazon"),
     affiliateUrl: z.string().nullable().default(null),
     url: z.string(),
+    trackableSlug: z.string().optional(),
   }),
 });
 

@@ -1,6 +1,7 @@
 ---
 nom: "LEGO Star Wars Millennium Falcon UCS"
-theme: "lego-star-wars"
+categorie: "lego"
+theme: "star-wars"
 referenceSet: "75192"
 prixIndicatif: 899.99
 prixVerifie: true

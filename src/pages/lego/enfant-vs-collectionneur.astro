@@ -3,7 +3,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import ProductCard from "../../components/ProductCard.astro";
 import { getCollection } from "astro:content";
 
-const all = await getCollection("produits", (p) => p.data.theme === "lego-star-wars");
+const all = await getCollection("produits", (p) => p.data.categorie === "lego");
 const getBySlug = (slug: string) => all.find((p) => p.id === slug)!;
 
 const cotéEnfant = [getBySlug("millennium-falcon-standard")];
@@ -17,7 +17,7 @@ const cotéCollectionneur = [
   title="LEGO Star Wars : enfant ou collectionneur, comment choisir ? | Zamble Comparatifs"
   description="Comment choisir entre un set LEGO Star Wars pensé pour le jeu et un set Ultimate Collector Series pensé pour l'exposition."
 >
-  <p><a href="/lego-star-wars/">← Tous les comparatifs LEGO Star Wars</a></p>
+  <p><a href="/lego/">← Tous les comparatifs LEGO</a></p>
   <h1>LEGO Star Wars : enfant ou collectionneur, comment choisir ?</h1>
   <p class="lede">
     Deux familles de sets très différentes cohabitent chez LEGO Star Wars : les sets

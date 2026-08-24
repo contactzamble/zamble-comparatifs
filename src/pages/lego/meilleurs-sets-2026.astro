@@ -2,7 +2,7 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { getCollection, render } from "astro:content";
 
-const produits = await getCollection("produits", (p) => p.data.theme === "lego-star-wars");
+const produits = await getCollection("produits", (p) => p.data.categorie === "lego");
 const tries = produits.sort((a, b) => b.data.prixIndicatif - a.data.prixIndicatif);
 const fiches = await Promise.all(
   tries.map(async (p) => ({ entry: p, Content: (await render(p)).Content }))
@@ -12,7 +12,7 @@ const fiches = await Promise.all(
   title="Meilleurs sets LEGO Star Wars 2026 | Zamble Comparatifs"
   description="Notre sélection des meilleurs sets LEGO Star Wars, du plus accessible au plus premium."
 >
-  <p><a href="/lego-star-wars/">← Tous les comparatifs LEGO Star Wars</a></p>
+  <p><a href="/lego/">← Tous les comparatifs LEGO</a></p>
   <h1>Meilleurs sets LEGO Star Wars 2026</h1>
   <p class="lede">
     Un panorama des sets LEGO Star Wars qui valent le coup en 2026, du plus accessible

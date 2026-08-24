@@ -21,8 +21,13 @@ const { title, description } = Astro.props;
     <div class="container">
       <a class="brand" href="/">Zamble Comparatifs</a>
       <nav>
-        <a href="/lego-star-wars/">LEGO Star Wars</a>
+        <a href="/lego/">LEGO</a>
+        <a href="/jeux-de-societe/">Jeux de société</a>
+        <a href="/cartes-a-collectionner/">Cartes à collectionner</a>
+        <a href="/rechercher/">Rechercher</a>
         <a href="/contact/">Contact</a>
+        <a href="/compte/connexion/" id="nav-connexion">Connexion</a>
+        <a href="/compte/" id="nav-mon-compte" hidden>Mon compte</a>
       </nav>
     </div>
   </header>
@@ -44,3 +49,16 @@ const { title, description } = Astro.props;
   </footer>
 </body>
 </html>
+
+<script type="module">
+  import { supabase } from "../lib/supabase";
+
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+
+  if (session) {
+    document.getElementById("nav-connexion")?.setAttribute("hidden", "");
+    document.getElementById("nav-mon-compte")?.removeAttribute("hidden");
+  }
+</script>

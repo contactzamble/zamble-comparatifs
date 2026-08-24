@@ -1,6 +1,7 @@
 ---
 nom: "LEGO Star Wars Le Faucon Millennium"
-theme: "lego-star-wars"
+categorie: "lego"
+theme: "star-wars"
 referenceSet: "75257"
 prixIndicatif: 272.50
 prixVerifie: true

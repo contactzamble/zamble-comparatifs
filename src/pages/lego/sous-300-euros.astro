@@ -3,7 +3,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import ProductCard from "../../components/ProductCard.astro";
 import { getCollection } from "astro:content";
 
-const produits = (await getCollection("produits", (p) => p.data.theme === "lego-star-wars"))
+const produits = (await getCollection("produits", (p) => p.data.categorie === "lego"))
   .filter((p) => p.data.prixIndicatif < 300)
   .sort((a, b) => a.data.prixIndicatif - b.data.prixIndicatif);
 ---
@@ -11,7 +11,7 @@ const produits = (await getCollection("produits", (p) => p.data.theme === "lego-
   title="Meilleurs sets LEGO Star Wars sous 300 € | Zamble Comparatifs"
   description="Notre sélection de sets LEGO Star Wars accessibles, sous 300 euros."
 >
-  <p><a href="/lego-star-wars/">← Tous les comparatifs LEGO Star Wars</a></p>
+  <p><a href="/lego/">← Tous les comparatifs LEGO</a></p>
   <h1>Les meilleurs sets LEGO Star Wars sous 300 €</h1>
   <p class="lede">
     Pas besoin d'un budget de collectionneur pour avoir un beau set Star Wars à la maison.

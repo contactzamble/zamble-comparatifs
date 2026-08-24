@@ -1,0 +1,22 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import ProductCard from "../../components/ProductCard.astro";
+import { getCollection } from "astro:content";
+
+const produits = await getCollection("produits", (p) => p.data.categorie === "cartes-a-collectionner");
+---
+<BaseLayout
+  title="Comparatifs cartes à collectionner"
+  description="Tous nos comparatifs et guides d'achat de cartes à collectionner (Pokémon, Magic, One Piece, Yu-Gi-Oh)."
+>
+  <h1>Comparatifs cartes à collectionner</h1>
+  <p class="lede">Pokémon, Magic: The Gathering, One Piece Card Game, Yu-Gi-Oh — tous les produits couverts par nos guides.</p>
+
+  {produits.length === 0 ? (
+    <p class="lede">Nos premiers comparatifs de cartes à collectionner arrivent bientôt.</p>
+  ) : (
+    <div class="grid">
+      {produits.map((produit) => <ProductCard produit={produit} />)}
+    </div>
+  )}
+</BaseLayout>

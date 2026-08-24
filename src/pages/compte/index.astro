@@ -13,9 +13,11 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
       <input id="email-enabled" type="checkbox" />
       Recevoir les alertes par email
     </label>
-    <p class="meta" style="color:var(--text-muted); margin-top:0.5rem">
-      Les alertes Telegram arriveront bientôt — l'option sera ajoutée ici une fois disponible.
-    </p>
+
+    <div style="margin-top:1rem">
+      <p id="telegram-status" class="meta" style="color:var(--text-muted)"></p>
+      <button id="telegram-link-btn" class="btn btn-secondary" style="margin-top:0.5rem">Lier Telegram</button>
+    </div>
 
     <h2>Prix suivis</h2>
     <p id="tracked-empty" class="lede" hidden>Vous ne suivez aucun prix pour l'instant. Repérez un produit et cliquez sur « Suivre le prix ».</p>
@@ -32,6 +34,8 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
   const dashboard = document.getElementById("dashboard");
   const emailEl = document.getElementById("account-email");
   const emailEnabled = document.getElementById("email-enabled");
+  const telegramStatus = document.getElementById("telegram-status");
+  const telegramLinkBtn = document.getElementById("telegram-link-btn");
   const trackedEmpty = document.getElementById("tracked-empty");
   const trackedList = document.getElementById("tracked-list");
   const logoutBtn = document.getElementById("logout-btn");
@@ -46,11 +50,31 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
     const user = session.user;
     emailEl.textContent = `Connecté en tant que ${user.email}`;
 
-    const { data: prefs } = await supabase.from("notification_preferences").select("email_enabled").eq("user_id", user.id).single();
+    const { data: prefs } = await supabase
+      .from("notification_preferences")
+      .select("email_enabled, telegram_enabled, telegram_chat_id")
+      .eq("user_id", user.id)
+      .single();
     emailEnabled.checked = prefs?.email_enabled ?? true;
 
     emailEnabled.addEventListener("change", async () => {
       await supabase.from("notification_preferences").update({ email_enabled: emailEnabled.checked }).eq("user_id", user.id);
+    });
+
+    if (prefs?.telegram_enabled && prefs?.telegram_chat_id) {
+      telegramStatus.textContent = "✅ Telegram lié — vous recevrez vos alertes sur Telegram.";
+      telegramLinkBtn.textContent = "Relier un autre compte Telegram";
+    } else {
+      telegramStatus.textContent = "Telegram non lié.";
+    }
+
+    telegramLinkBtn.addEventListener("click", async () => {
+      const { data: token, error } = await supabase.rpc("request_telegram_link");
+      if (error || !token) {
+        telegramStatus.textContent = "Erreur lors de la génération du lien, réessayez.";
+        return;
+      }
+      window.open(`https://t.me/ZambleAlertesBot?start=${token}`, "_blank");
     });
 
     const { data: tracked } = await supabase

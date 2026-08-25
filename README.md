@@ -1,8 +1,8 @@
 # zamble-comparatifs
 
-Site de comparatifs jeux/jouets avec liens d'affiliation, v1 centrée sur le thème
-LEGO Star Wars. Déployé sur zamble.fr (domaine et hébergement OVH réutilisés depuis
-l'ancien projet [zamble-archive](https://github.com/contactzamble/zamble-archive)).
+Site de suivi de prix jeux/jouets avec liens d'affiliation (LEGO, jeux de société,
+cartes à collectionner). Déployé sur zamble.fr (domaine et hébergement OVH réutilisés
+depuis l'ancien projet [zamble-archive](https://github.com/contactzamble/zamble-archive)).
 
 Stack : [Astro](https://astro.build), site 100% statique, déployé via FTP sur OVH
 (GitHub Actions, `.github/workflows/deploy.yml`).

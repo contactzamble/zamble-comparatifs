@@ -6,11 +6,11 @@ import { getCollection } from "astro:content";
 const produits = await getCollection("produits", (p) => p.data.categorie === "lego");
 ---
 <BaseLayout
-  title="Comparatifs LEGO"
-  description="Tous nos comparatifs et guides d'achat LEGO."
+  title="LEGO — Suivi de prix"
+  description="Prix actuel, historique et alertes sur notre sélection de sets LEGO."
 >
-  <h1>Comparatifs LEGO</h1>
-  <p class="lede">Tous les sets couverts par nos guides, du plus accessible au plus premium.</p>
+  <h1>LEGO</h1>
+  <p class="lede">Notre sélection de sets LEGO, avec suivi de prix et alerte dès qu'il baisse.</p>
 
   <h2>Nos guides d'achat</h2>
   <ul>

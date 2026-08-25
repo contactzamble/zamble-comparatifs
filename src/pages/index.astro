@@ -6,14 +6,14 @@ import { getCollection } from "astro:content";
 const produits = (await getCollection("produits")).slice(0, 3);
 ---
 <BaseLayout
-  title="Zamble Comparatifs — LEGO, jeux de société, cartes à collectionner"
-  description="Comparatifs indépendants et suivi de prix pour bien choisir vos jeux et jouets."
+  title="Zamble — Suivi de prix LEGO, jeux de société, cartes à collectionner"
+  description="Suivi de prix et alertes sur une sélection de sets LEGO, jeux de société et cartes à collectionner."
 >
-  <h1>Bien choisir vos jeux et jouets</h1>
+  <h1>Suivez le prix de vos jeux et jouets préférés</h1>
   <p class="lede">
-    Des comparatifs indépendants et un suivi de prix pour s'y retrouver parmi les sets LEGO,
-    les jeux de société et les cartes à collectionner : budget, points forts et limites de
-    chaque produit, avec une alerte quand le prix baisse.
+    On surveille les prix pour vous : historique, prix le plus bas vu, et une alerte dès
+    qu'il baisse — sur une sélection de sets LEGO, de jeux de société et de cartes à
+    collectionner.
   </p>
 
   <h2>À la une</h2>
@@ -21,5 +21,5 @@ const produits = (await getCollection("produits")).slice(0, 3);
     {produits.map((produit) => <ProductCard produit={produit} />)}
   </div>
 
-  <p style="margin-top:2.5rem"><a class="btn btn-secondary" href="/lego/">Voir tous les comparatifs LEGO →</a></p>
+  <p style="margin-top:2.5rem"><a class="btn btn-secondary" href="/lego/">Voir tous les sets LEGO →</a></p>
 </BaseLayout>

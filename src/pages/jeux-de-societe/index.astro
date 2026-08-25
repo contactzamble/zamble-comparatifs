@@ -6,14 +6,14 @@ import { getCollection } from "astro:content";
 const produits = await getCollection("produits", (p) => p.data.categorie === "jeux-de-societe");
 ---
 <BaseLayout
-  title="Comparatifs jeux de société"
-  description="Tous nos comparatifs et guides d'achat de jeux de société."
+  title="Jeux de société — Suivi de prix"
+  description="Prix actuel, historique et alertes sur notre sélection de jeux de société."
 >
-  <h1>Comparatifs jeux de société</h1>
-  <p class="lede">Tous les jeux couverts par nos guides, du plus accessible au plus premium.</p>
+  <h1>Jeux de société</h1>
+  <p class="lede">Notre sélection de jeux de société, avec suivi de prix et alerte dès qu'il baisse.</p>
 
   {produits.length === 0 ? (
-    <p class="lede">Nos premiers comparatifs de jeux de société arrivent bientôt.</p>
+    <p class="lede">Nos premières fiches de jeux de société arrivent bientôt.</p>
   ) : (
     <div class="grid">
       {produits.map((produit) => <ProductCard produit={produit} />)}

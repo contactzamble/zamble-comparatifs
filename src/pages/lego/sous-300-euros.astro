@@ -8,10 +8,10 @@ const produits = (await getCollection("produits", (p) => p.data.categorie === "l
   .sort((a, b) => a.data.prixIndicatif - b.data.prixIndicatif);
 ---
 <BaseLayout
-  title="Meilleurs sets LEGO Star Wars sous 300 € | Zamble Comparatifs"
+  title="Meilleurs sets LEGO Star Wars sous 300 € | Zamble"
   description="Notre sélection de sets LEGO Star Wars accessibles, sous 300 euros."
 >
-  <p><a href="/lego/">← Tous les comparatifs LEGO</a></p>
+  <p><a href="/lego/">← Tous les sets LEGO</a></p>
   <h1>Les meilleurs sets LEGO Star Wars sous 300 €</h1>
   <p class="lede">
     Pas besoin d'un budget de collectionneur pour avoir un beau set Star Wars à la maison.
